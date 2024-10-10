@@ -14,7 +14,6 @@ def register_user(request):
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
-        type = user_type
         if user_type == 'MANAGER':
             is_superuser = True
         else:
@@ -26,7 +25,7 @@ def register_user(request):
             messages.info(request,'Password mismatch')
             return redirect('register')
         
-        if Profile.objects.filter(username = username).exists():
+        if User.objects.filter(username = username).exists():
             messages.info(request,'Username already exists')
             return redirect('register')
         if User.objects.filter(email = email).exists():
@@ -34,11 +33,11 @@ def register_user(request):
             return redirect('register')
         user = User.objects.create_user(username=username, first_name= first_name, last_name = last_name, is_superuser = is_superuser, password= password, email=email)
         user.save()
-        profile = Profile.objects.create(user = user, type = user_type)
+        profile = Profile.objects.create(user = user, type = user_type, user_id = user.id)
         profile.save()
         return redirect('login')
     
-    return render(request, 'users/register.html')
+    return render(request, 'profiles/register.html')
 
 def login_user(request):
 
@@ -61,13 +60,16 @@ def login_user(request):
                 elif user_type == 'MANAGER':
                     login(request,user)
                     return redirect('manager_home')
+                else:
+                    messages.info(request,'Random Type')
+                    return redirect('login')
             else:
                 messages.info(request,'Invalid Credentials')
                 return redirect('login')
         except:
             messages.error(request,'Invalid Role')
     
-    return render(request,'users/login.html')
+    return render(request,'profiles/login.html')
 
 def logout_user(request):
 

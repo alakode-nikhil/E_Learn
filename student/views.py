@@ -3,6 +3,6 @@ from django.views.generic import TemplateView
 
 # Create your views here.
 
-class TestView(TemplateView):
+class HomeView(TemplateView):
 
-    template_name = 'student/test.html'
+    template_name = 'student/home.html'

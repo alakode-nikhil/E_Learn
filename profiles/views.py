@@ -3,6 +3,7 @@ from django.contrib import messages
 from .models import Profile
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 def register_user(request):
@@ -35,6 +36,9 @@ def register_user(request):
         user.save()
         profile = Profile.objects.create(user = user, type = user_type, user_id = user.id)
         profile.save()
+        if request.user.is_authenticated:
+            if request.user.is_superuser:
+                return redirect('manager_home')
         return redirect('login')
     
     return render(request, 'profiles/register.html')
@@ -51,14 +55,12 @@ def login_user(request):
             if user is not None:
                 profle = user.profile
                 user_type = profle.type
+                login(request,user)
                 if user_type == 'STUDENT':
-                    login(request,user)
                     return redirect('student_home')
                 elif user_type == 'TRAINER':
-                    login(request,user)
                     return redirect('trainer_home')
                 elif user_type == 'MANAGER':
-                    login(request,user)
                     return redirect('manager_home')
                 else:
                     messages.info(request,'Random Type')

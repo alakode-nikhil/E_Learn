@@ -1,8 +1,17 @@
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.views.generic import ListView
+from .models import Course
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
-class TestView(TemplateView):
+class HomeView(LoginRequiredMixin, ListView):
 
-    template_name = 'manager/test.html'
+    model= Course
+    template_name = 'manager/home.html'
+    context_object_name = 'courses'
+    paginate_by = 10
+
+    def handle_no_permission(self) -> HttpResponseRedirect:
+        return render(self.request, 'error/denied_access.html', status=403)

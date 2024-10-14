@@ -9,5 +9,6 @@ urlpatterns = [
     path('delete/<pk>', views.DeleteUser.as_view(), name='delete_user'),
     path('add_course/', views.CreateCourse.as_view(), name='create_course'),
     path('add_chapter/<course_id>', views.add_chapter, name='add_chapter'),
-    path('course_details/<course_id>', views.course_details, name='course_details')
+    path('course_details/<course_id>', views.course_details, name='course_details'),
+    path('course_delete/<int:pk>', views.DeleteCourse.as_view(), name='delete_course'),
 ]

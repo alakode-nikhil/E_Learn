@@ -131,3 +131,12 @@ def course_details(request, course_id):
     current = chapters.first()
 
     return render(request, 'manager/course_details.html', {'course':course, 'chapters':chapters, 'current':current})
+
+class DeleteCourse(LoginRequiredMixin, DeleteView):
+
+    model = Course
+    template_name = 'manager/delete_course.html'
+    success_url = reverse_lazy('manager_home')
+
+    def handle_no_permission(self) -> HttpResponseRedirect:
+        return render(self.request, 'error/denied_access.html', status=403)

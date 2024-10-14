@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Course(models.Model):
     course_name = models.CharField(max_length=100)
-    trainer = models.ForeignKey(User, on_delete=models.CASCADE,limit_choices_to={'type':'TRAINER'})
+    trainer = models.ForeignKey(User, on_delete=models.CASCADE,limit_choices_to={'profile__type':'TRAINER'})
     price = models.IntegerField()
 
     def __str__(self) -> str:

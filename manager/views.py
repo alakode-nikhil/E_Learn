@@ -92,7 +92,7 @@ class DeleteUser(LoginRequiredMixin, DeleteView):
     template_name = 'manager/delete_user.html'
     success_url = reverse_lazy('manager_home')
 
-class CreateBook(CreateView):
+class CreateCourse(CreateView):
 
     model = Course
     form_class = CourseForm

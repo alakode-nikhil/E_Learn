@@ -3,7 +3,7 @@ from django.contrib import messages
 from .models import Profile
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
-from django.http import HttpResponseRedirect
+
 
 # Create your views here.
 def register_user(request):

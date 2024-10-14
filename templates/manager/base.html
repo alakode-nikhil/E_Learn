@@ -92,8 +92,7 @@
               <hr class="dropdown-divider">
             </li>
             <li>
-              <!--url 'list_student' -->
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'list_students' %}">
                 <i class="bi bi-question-user"></i>
                 <span>Students</span>
               </a>
@@ -102,8 +101,7 @@
               <hr class="dropdown-divider">
             </li>
             <li>
-                <!-- url 'list_trainer' -->
-                <a class="dropdown-item d-flex align-items-center" href="#">
+                <a class="dropdown-item d-flex align-items-center" href="{% url 'list_trainers' %}">
                   <i class="bi bi-question-user"></i>
                   <span>Trainers</span>
                 </a>
@@ -138,15 +136,13 @@
         </a>     
       <li class="nav-heading">Pages</li>
       <li class="nav-item">
-        <!-- url 'list_student' -->
-        <a class="nav-link collapsed" href="#">
+        <a class="nav-link collapsed" href="{% url 'list_students' %}">
           <i class="bi bi-person-workspace"></i>
           <span>Students</span>
         </a>
       </li><!-- End Student Page Nav -->
       <li class="nav-item">
-        <!-- url 'list_trainer' -->
-        <a class="nav-link collapsed" href="#">
+        <a class="nav-link collapsed" href="{% url 'list_trainers' %}">
           <i class="bi bi-person-vcard"></i>
           <span>Trainers</span>
         </a>

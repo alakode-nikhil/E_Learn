@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Course(models.Model):
     course_name = models.CharField(max_length=100)
-    trainer = models.ForeignKey(User, on_delete=models.CASCADE,limit_choices_to={'type':'MANAGER'})
+    trainer = models.ForeignKey(User, on_delete=models.CASCADE,limit_choices_to={'type':'TRAINER'})
     price = models.IntegerField()
 
     def __str__(self) -> str:
@@ -14,6 +14,9 @@ class Chapter(models.Model):
     chapter_name = models.CharField(max_length=100)
     chapter_video = models.FileField(upload_to='course_videos/')
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return '{}'.format(self.chapter_name)
 
 class ChapterCompleted(models.Model):
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)

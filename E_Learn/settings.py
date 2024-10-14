@@ -134,3 +134,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Payment Gateway APIs
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51Q7PMTRu8ctX2xzft4OGhHVqOWgcoEgytboGqXDpyso8ETVbSKH3dJl73DQ08fpwz7gVdKOdqeFhhRopXzOzoIBf00F7fe3HZe'
+STRIPE_SECRET_KEY ='sk_test_51Q7PMTRu8ctX2xzfk56WR5R8HcukvAdl26ZCJ5I9GCy4oLbq977BhRFHikJplecNfcBIGqZfv05pdBilldEFk5nZ00kCYpnnnf'

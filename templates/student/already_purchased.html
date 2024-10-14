@@ -1,0 +1,21 @@
+{% extends 'student/base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="pagetitle">
+        <h1>Course Already Purchased</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'student_home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href = "{% url 'purchase_courses' %}">Purchase Courses</a></li>
+                <li class="breadcrumb-item active">{{course.course_name}}Already Purchased!</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    {% if user.is_authenticated %}
+    <div class="input-group mb-2">
+        <input type="text" class="form-control" value="Course Already Purchased" readonly />
+    </div>
+    <a href="{% url 'purchase_courses' %}" class="btn btn-primary">Home</a>
+    {% endif %}
+{% endblock %}

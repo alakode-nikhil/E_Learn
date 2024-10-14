@@ -16,7 +16,7 @@
 {{msg}}
 {% endfor %}
 
-{%if user.is_authenticated and user.profile.type == 'MANAGER' %}
+{%if user.is_authenticated and user.profile.type == 'STUDENT' %}
 <table class="table">
     <thead>
         <tr>
@@ -32,7 +32,6 @@
             <th scope="row">{{forloop.counter}}</th>
             <td>{{course.course_name}}</td>
             <td>{{course.trainer}}</td>
-            <td>{{course.price}}</td>
             <td>
                 <a href="#" class="btn btn-primary"> Go to course</a>
             </td>

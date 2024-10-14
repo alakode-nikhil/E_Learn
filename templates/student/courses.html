@@ -36,8 +36,17 @@
             <td>{{course.trainer}}</td>
             <td>{{course.price}}</td>
             <td>
-                <a href="#" class="btn btn-primary"> Buy Course</a>
-                <a href="{% url 'course_trainer' course.id %}" class="btn btn-success"> Trainer Details </a> 
+                <div class="row">
+                    <div class="col-3">
+                        <form action="{% url 'purchase_course' course.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary"> Buy Course</button>
+                        </form>
+                    </div>
+                    <div class="col-9 justify-content-start">
+                        <a href="{% url 'course_trainer' course.id %}" class="btn btn-success"> Trainer Details </a> 
+                    </div>
+                </div>
             </td>
         </tr>
         {% endfor %}

@@ -4,7 +4,7 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DeleteView, CreateView
-from .models import Course
+from .models import Course, Chapter
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -92,7 +92,10 @@ class DeleteUser(LoginRequiredMixin, DeleteView):
     template_name = 'manager/delete_user.html'
     success_url = reverse_lazy('manager_home')
 
-class CreateCourse(CreateView):
+    def handle_no_permission(self) -> HttpResponseRedirect:
+        return render(self.request, 'error/denied_access.html', status=403)
+
+class CreateCourse(LoginRequiredMixin, CreateView):
 
     model = Course
     form_class = CourseForm
@@ -101,3 +104,30 @@ class CreateCourse(CreateView):
 
     success_url = reverse_lazy('manager_home')
 
+    def handle_no_permission(self) -> HttpResponseRedirect:
+        return render(self.request, 'error/denied_access.html', status=403)
+
+@login_required
+def add_chapter(request, course_id):
+
+    course = Course.objects.get(id = course_id)
+
+    if request.method == 'POST':
+        chapter_name = request.POST.get('chapter_name')
+        chapter_video = request.FILES.get('chapter_video')
+
+        chapter= Chapter.objects.create(chapter_name = chapter_name, chapter_video = chapter_video, course = course)
+        chapter.save()
+        return redirect('manager_home')
+
+    return render(request, 'manager/add_chapter.html')
+
+
+@login_required
+def course_details(request, course_id):
+
+    course = Course.objects.get(id = course_id)
+    chapters = course.chapter_set.all()
+    current = chapters.first()
+
+    return render(request, 'manager/course_details.html', {'course':course, 'chapters':chapters, 'current':current})

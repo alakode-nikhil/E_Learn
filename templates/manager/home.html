@@ -35,9 +35,8 @@
             <td>{{course.trainer}}</td>
             <td>{{course.price}}</td>
             <td>
-                <a href="#" class="btn btn-primary"> Details</a>
-                <a href="#" class="btn btn-success"> Add Chapter </a> 
-                <a href="#" class="btn btn-warning"> Remove Chapter </a> 
+                <a href="{% url 'course_details' course.id %}" class="btn btn-primary"> Details</a>
+                <a href="{% url 'add_chapter' course.id %}" class="btn btn-success"> Add Chapter </a> 
                 <a href="#" class="btn btn-danger"> Delete Course </a>
             </td>
         </tr>

@@ -30,3 +30,9 @@ function loginAlert() {
 
     alert('LOGIN sucessfull');
 }
+
+function changeChapter(chapterUrl, chapterName){
+    document.getElementById("main_video").src = chapterUrl;
+    document.getElementById("main_video").load();
+    document.getElementById("chapter_name").innerHTML = chapterName;
+}

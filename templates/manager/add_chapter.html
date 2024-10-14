@@ -1,0 +1,32 @@
+{% extends 'manager/base.html' %}
+{% load static %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Add Chapter</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'manager_home' %}">Home</a></li>
+            <li class="breadcrumb-item active">Add Chapter</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div class="card mx-auto">
+    <div class="card-body mt-5">
+        {% for msg in messages %}
+        {{msg}}
+        {% endfor %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="chapter_name" class="form-label">Chapter Name</label>
+                <input type="text" class="form-control" name="chapter_name" id ="chapter_name" required>
+            </div>
+            <div class="mb-3">
+                <label for="chapter_video" class="form-label">Chapter Video</label>
+                <input type="file" class="form-control" name="chapter_video" id="chapter_video" accept="video/*" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Chapter</button>
+        </form>
+    </div> 
+</div>
+{% endblock %}

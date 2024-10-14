@@ -1,0 +1,45 @@
+{% extends 'manager/base.html' %}
+{% load static %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Add Chapter</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'manager_home' %}">Home</a></li>
+            <li class="breadcrumb-item active">Add Chapter</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div class="container m-auto">
+    <div class="form-control">
+        <h4 >Course: {{course.course_name}}</h4>
+        <h4>Price: {{course.price}}</h4>
+    
+        <div class="video-player m-auto">
+            <h4 id="chapter_name">Chapter: {{current.chapter_name}}</h4>
+            <video id="main_video" controls>
+                <source src="{{current.chapter_video.url}}" type="video/mp4">
+            </video>
+        </div>
+        <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">All Chapters</button>
+
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">{{course.course_name}}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ol>
+                {% for chapter in chapters %}
+                    <li>
+                        <div class="form-control mb-2">
+                            <a href="#" onclick="changeChapter('{{chapter.chapter_video.url}}','{{chapter.chapter_name}}')">{{chapter.chapter_name}}</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

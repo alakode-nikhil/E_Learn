@@ -11,4 +11,5 @@ urlpatterns = [
     path('add_chapter/<course_id>', views.add_chapter, name='add_chapter'),
     path('course_details/<course_id>', views.course_details, name='course_details'),
     path('course_delete/<int:pk>', views.DeleteCourse.as_view(), name='delete_course'),
+    path('search_course/', views.SearchCourse.as_view(), name='search_course'),
 ]

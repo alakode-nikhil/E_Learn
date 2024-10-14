@@ -1,0 +1,24 @@
+{% extends 'student/base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="pagetitle">
+        <h1>Trainer Details</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'student_home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'purchase_courses' %}">Purchase Course</a></li>
+                <li class="breadcrumb-item active">Trainer Details</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    {% if user.is_authenticated %}
+    <div class="card p-2" style="width: 20rem;">
+        <div class="class-body">
+            <p class="card-text">First Name: {{course.trainer.first_name}}</p>
+            <p class="card-text">Last Name: {{course.trainer.last_name}}</p>
+        </div>
+    </div>
+    {% endif %}
+
+{% endblock %}

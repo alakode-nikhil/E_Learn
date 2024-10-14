@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Manager Dashboard</title>
+  <title>E Learn</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -45,15 +45,15 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="{% url 'manager_home' %}" class="logo d-flex align-items-center">
-        <span class="d-none d-lg-block">E Learn Control</span>
+      <a href="{% url 'student_home' %}" class="logo d-flex align-items-center">
+        <span class="d-none d-lg-block">E Learn</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
     <div class="search-bar">
       <!-- url 'search_course' -->
-      <form class="search-form d-flex align-items-center" method="get" action="{% url 'search_course' %}">
+      <form class="search-form d-flex align-items-center" method="get" action="#">
         <input type="text" name="q" placeholder="Search" title="Enter search keyword">
         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
       </form>
@@ -76,14 +76,14 @@
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
               <h6>{{user.username}}</h6>
-              <span>Manager</span>
+              <span>Student</span>
             </li>
             <li>
               <hr class="dropdown-divider">
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="{% url 'manager_home' %}">
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'student_home' %}">
                 <i class="bi bi-home"></i>
                 <span>Dashboard</span>
               </a>
@@ -128,50 +128,31 @@
   <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
-
-      <li class="nav-item">
-        <a class="nav-link " href="{% url 'manager_home' %}">
-          <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
-        </a>     
-      <li class="nav-heading">Pages</li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'list_students' %}">
-          <i class="bi bi-person-workspace"></i>
-          <span>Students</span>
-        </a>
-      </li><!-- End Student Page Nav -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'list_trainers' %}">
-          <i class="bi bi-person-vcard"></i>
-          <span>Trainers</span>
-        </a>
-      </li><!-- End Trainer Page Nav -->
-      <li class="nav-item">
-        <!--url 'create_course' -->
-        <a class="nav-link collapsed" href="{% url 'create_course' %}">
-          <i class="bi bi-book"></i>
-          <span>Add Course</span>
-        </a>
-      </li><!-- End Create Course Page Nav -->
-      <li class="nav-item"></li>
-        <a class="nav-link collapsed" href="{% url 'register' %}?type=MANAGER">
-          <i class="bi bi-person-gear"></i>
-          <span>Add Manager</span>
-        </a>
-      </li><!-- End Admin nav -->
-      <li class="nav-item"></li>
-        <a class="nav-link collapsed" href="{% url 'register' %}?type=TRAINER">
-          <i class="bi bi-person-lock"></i>
-          <span>Add Trainer</span>
-        </a>
-      </li><!-- End Admin nav -->
-      <li class="nav-item"></li>
-        <a class="nav-link collapsed" href="{% url 'register' %}?type=STUDENT">
-          <i class="bi bi-person-add"></i>
-          <span>Add Student</span>
-        </a>
-      </li><!-- End Admin nav -->
+        <li class="nav-item">
+            <a class="nav-link " href="{% url 'student_home' %}">
+            <i class="bi bi-grid"></i>
+            <span>Dashboard</span>
+            </a> 
+        </li>  
+        <li class="nav-heading">Pages</li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#">
+            <i class="bi bi-person-vcard"></i>
+            <span>Profile</span>
+            </a>
+        </li><!-- End Profile Page Nav -->  
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'purchase_courses' %}">
+                <i class="bi bi-wallet"></i>
+                <span>Purchase Course</span>
+            </a>
+        </li><!-- End Purchase Course Page Nav -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#">
+            <i class="bi bi-person-gear"></i>
+            <span>Trainer Details</span>
+            </a>
+        </li><!-- End Trainer Details Page Nav -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="{% url 'logout' %}">
           <i class="bi bi-box-arrow-in-right"></i>

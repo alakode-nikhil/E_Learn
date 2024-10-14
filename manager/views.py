@@ -1,5 +1,5 @@
 from typing import Any
-from django.db.models.query import QuerySet
+from django.db.models.query import QuerySet, Q
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
@@ -140,3 +140,16 @@ class DeleteCourse(LoginRequiredMixin, DeleteView):
 
     def handle_no_permission(self) -> HttpResponseRedirect:
         return render(self.request, 'error/denied_access.html', status=403)
+    
+class SearchCourse(LoginRequiredMixin, ListView):
+
+    model = Course
+    template_name = 'manager/search_course.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+
+        return Course.objects.filter(
+            Q(course_name__icontains = query)
+        )

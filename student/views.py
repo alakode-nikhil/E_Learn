@@ -106,3 +106,29 @@ def already_purchased(request, pk):
 
     return render(request, 'student/already_purchased.html',{'course':course})
 
+@login_required
+def goto_course(request, course_id):
+
+    course = Course.objects.get(id = course_id)
+    chapters = course.chapter_set.all()
+    current = chapters.first()
+    chapter_completed = ChapterCompleted.objects.get(chapter = current, student = request.user)
+    if chapter_completed and not chapter_completed.completed:
+        chapter_completed.completed = True
+        chapter_completed.save()
+
+    return render(request, 'student/goto_course.html', {'course':course, 'chapters':chapters, 'current':current})
+
+@login_required
+def goto_chapter(request, chapter_id):
+
+    chapter = Chapter.objects.get(id = chapter_id)
+    course = chapter.course
+    chapters = course.chapter_set.all()
+    chapter_completed = ChapterCompleted.objects.get(chapter = chapter, student = request.user)
+    if chapter_completed and not chapter_completed.completed:
+        chapter_completed.completed = True
+        chapter_completed.save()
+
+    return render(request, 'student/goto_course.html', {'course':course, 'chapters':chapters, 'current':chapter})
+

@@ -1,0 +1,42 @@
+{% extends 'student/base.html' %}
+{% load static %}
+{% block content %}
+<div class="pagetitle">
+    <h1>{{course.course_name}}</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'student_home' %}">Home</a></li>
+            <li class="breadcrumb-item active">{{course.course_name}}</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div class="container m-auto">
+    <div class="form-control">    
+        <div class="video-player m-auto">
+            <h4 id="chapter_name">Chapter: {{current.chapter_name}}</h4>
+            <video id="main_video" style="height: 40rem; width: 60rem;" controls>
+                <source src="{{current.chapter_video.url}}" type="video/mp4">
+            </video>
+        </div>
+        <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">All Chapters</button>
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">{{course.course_name}}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ol>
+                {% for chapter in chapters %}
+                    <li>
+                        <form action="{% url 'goto_chapter' chapter.id %}" method="post" class="mb-2">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-secondary btn-block">{{chapter.chapter_name}}</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

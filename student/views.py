@@ -3,8 +3,10 @@ from django.db.models.query import QuerySet
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
+from django.contrib.auth.models import User
 from manager.models import Course, Chapter, ChapterCompleted
 from .models import IsPurchased
+from trainer.models import Rating
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
@@ -32,14 +34,6 @@ class CourseView(LoginRequiredMixin, ListView):
     template_name = 'student/courses.html'
     context_object_name = 'courses'
     paginate_by = 10
-
-    def handle_no_permission(self) -> HttpResponseRedirect:
-        return render(self.request, 'error/denied_access.html', status=403)
-    
-class CourseTrainer(LoginRequiredMixin, DetailView):
-    model = Course
-    template_name = 'student/course_trainer.html'
-    context_object_name = 'course'
 
     def handle_no_permission(self) -> HttpResponseRedirect:
         return render(self.request, 'error/denied_access.html', status=403)
@@ -131,4 +125,18 @@ def goto_chapter(request, chapter_id):
         chapter_completed.save()
 
     return render(request, 'student/goto_course.html', {'course':course, 'chapters':chapters, 'current':chapter})
+
+@login_required
+def check_trainer(request, trainer_id):
+
+    trainer = User.objects.get(id=trainer_id)
+    trainer_rating, created = Rating.objects.get_or_create(user = trainer)
+
+    if created:
+        trainer_rating.user = trainer
+        trainer_rating.score = 0
+        trainer_rating.count = 0
+        trainer_rating.save()
+
+    return render(request, 'student/check_trainer.html',{'trainer_rating': trainer_rating})
 

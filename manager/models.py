@@ -6,6 +6,7 @@ class Course(models.Model):
     course_name = models.CharField(max_length=100)
     trainer = models.ForeignKey(User, on_delete=models.CASCADE,limit_choices_to={'profile__type':'TRAINER'})
     price = models.IntegerField()
+    is_rated = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return '{}'.format(self.course_name)

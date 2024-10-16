@@ -1,0 +1,46 @@
+{% extends 'student/base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="pagetitle">
+        <h1>Trainer Details</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'student_home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'purchase_courses' %}">Purchase Course</a></li>
+                <li class="breadcrumb-item active">Trainer Details</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    {% if user.is_authenticated %}
+    <div class="card p-2" style="width: 20rem;">
+        <div class="class-body">
+            <p class="card-text">First Name: {{trainer_rating.user.first_name}}</p>
+            <p class="card-text">Last Name: {{trainer_rating.user.last_name}}</p>
+            <p class="card-text">Rating:</p>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped " role="progressbar" id="progressbar" data-progress = "{{trainer_rating.score}}"
+                     aria-valuenow="{{trainer_rating.score}}" 
+                     aria-valuemin="0" 
+                     aria-valuemax="5">
+                  {{ trainer_rating.score}}
+                </div>
+                <script>
+                    const rating = parseInt(document.getElementById("progressbar").getAttribute('data-progress'));
+                    var progress = 0
+                    if (!isNaN(rating)){
+                        progress = (rating) * 20;
+                        console.log(progress)
+                    }
+                    else{
+                        console.error('Invalid Progress Value')
+                    }
+                    const myDiv = document.getElementById("progressbar");
+                    myDiv.style.width = progress + "%";
+                </script>
+              </div>
+        </div>
+    </div>
+    {% endif %}
+
+{% endblock %}

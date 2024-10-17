@@ -11,5 +11,7 @@ urlpatterns = [
     path('already_purchased/<pk>', views.already_purchased, name='already_purchased'),
     path('course/<course_id>/', views.goto_course, name = 'goto_course'),
     path('chapter/<chapter_id>/', views.goto_chapter, name = 'goto_chapter'),
+    path('rate_trainer/<trainer_id>/', views.rate_trainer, name = 'rate_trainer'),
+    path('rate_success/', views.success_rating, name='rate_success'),
 
 ]

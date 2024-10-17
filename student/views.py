@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
 from manager.models import Course, Chapter, ChapterCompleted
-from .models import IsPurchased
+from .models import IsPurchased, CanRate
 from trainer.models import Rating
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
@@ -107,11 +107,12 @@ def goto_course(request, course_id):
     chapters = course.chapter_set.all()
     current = chapters.first()
     chapter_completed = ChapterCompleted.objects.get(chapter = current, student = request.user)
+    possible,_ = CanRate.objects.get_or_create(course = course, student = request.user)
     if chapter_completed and not chapter_completed.completed:
         chapter_completed.completed = True
         chapter_completed.save()
 
-    return render(request, 'student/goto_course.html', {'course':course, 'chapters':chapters, 'current':current})
+    return render(request, 'student/goto_course.html', {'course':course, 'chapters':chapters, 'current':current, 'possible':possible})
 
 @login_required
 def goto_chapter(request, chapter_id):
@@ -120,11 +121,12 @@ def goto_chapter(request, chapter_id):
     course = chapter.course
     chapters = course.chapter_set.all()
     chapter_completed = ChapterCompleted.objects.get(chapter = chapter, student = request.user)
+    possible,_ = CanRate.objects.get_or_create(course = course, student = request.user)
     if chapter_completed and not chapter_completed.completed:
         chapter_completed.completed = True
         chapter_completed.save()
 
-    return render(request, 'student/goto_course.html', {'course':course, 'chapters':chapters, 'current':chapter})
+    return render(request, 'student/goto_course.html', {'course':course, 'chapters':chapters, 'current':chapter, 'possible':possible})
 
 @login_required
 def check_trainer(request, trainer_id):
@@ -139,4 +141,38 @@ def check_trainer(request, trainer_id):
         trainer_rating.save()
 
     return render(request, 'student/check_trainer.html',{'trainer_rating': trainer_rating})
+
+@login_required
+def rate_trainer(request, trainer_id):
+    trainer = User.objects.get(id = trainer_id)
+    course_id = request.GET.get('course_id')
+    course = Course.objects.get(id = course_id)
+
+    if request.method == 'POST':
+        rating = int(request.POST.get('rating_input'))
+    
+        student = request.user
+        progress = CanRate.objects.get(course = course, student = student)
+        progress.can_rate = False
+        progress.save()
+
+        trainer_rating,created = Rating.objects.get_or_create(user = trainer)
+        if created or trainer_rating.count == 0:
+            trainer_rating.score += rating
+            trainer_rating.count += 1
+        
+        else:
+            trainer_rating.score = int(((trainer_rating.score * trainer_rating.count) + rating)/(trainer_rating.count + 1))
+            trainer_rating.count += 1
+
+        trainer_rating.save()
+
+        return redirect('rate_success')
+        
+    return render(request, 'student/rate_trainer.html',{'course':course})
+
+
+@login_required
+def success_rating(request):
+    return render(request, 'student/success_rating.html')
 

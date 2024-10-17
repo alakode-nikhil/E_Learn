@@ -18,7 +18,16 @@
                 <source src="{{current.chapter_video.url}}" type="video/mp4">
             </video>
         </div>
-        <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">All Chapters</button>
+        <div class="row">
+            <div class="col-2">
+                <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">All Chapters</button>
+            </div>
+            <div class="col-10 justify-content-start">
+                {% if possible.can_rate %}
+                <a href="{% url 'rate_trainer' course.trainer.id %}?course_id={{course.id}}" class="btn btn-success btn-block">Rate Trainer</a>
+                {% endif %}
+            </div>
+        </div>
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasRightLabel">{{course.course_name}}</h5>

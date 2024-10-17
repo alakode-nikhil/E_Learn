@@ -1,0 +1,40 @@
+{% extends 'student/base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="pagetitle">
+        <h1>Trainer Rating</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'student_home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href = "{% url 'goto_course' course.id %}">{{course.course_name}}</a></li>
+                <li class="breadcrumb-item active">Trainer Rating</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    {% if user.is_authenticated %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="progress my-2" style="height: 30px;">
+            <div class="progress-bar" role="progressbar" id="rating-progress">
+                <input type="range" class="form-range m-2" min="1" max="5" id="rating_input" name="rating_input">
+            </div>
+           
+        </div>
+        <label for="rating-input">Rating: <span id="rating-display">1</span>/5</label>
+        <script>
+            const ratingInput = document.getElementById('rating_input');
+            const ratingProgress = document.getElementById('rating-progress');
+            const ratingDisplay = document.getElementById('rating-display');
+
+            ratingInput.addEventListener('input', (e) => {
+            const ratingValue = e.target.value;
+            ratingProgress.style.width = (ratingValue * 20) + "%";
+            ratingDisplay.textContent = ratingValue;
+            });
+        </script>
+        <br>
+        <button type="submit" class="btn btn-success my-2">Rate</button>
+    </form>
+    {% endif %}
+{% endblock %}

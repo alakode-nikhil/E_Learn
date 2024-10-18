@@ -185,3 +185,11 @@ def trainer_details(request, trainer_id):
 
 
     return render(request, 'student/trainer_details.html', {'contact':contact_det, 'rating':rating, 'trainer':trainer})
+
+class StudentDetails(DetailView, LoginRequiredMixin):
+    model = User
+    template_name = 'student/student_detail.html'
+    context_object_name = 'student'
+
+    def handle_no_permission(self) -> HttpResponseRedirect:
+        return render(self.request, 'error/denied_access.html', status=403)

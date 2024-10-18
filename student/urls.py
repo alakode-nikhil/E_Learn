@@ -14,5 +14,6 @@ urlpatterns = [
     path('rate_trainer/<trainer_id>/', views.rate_trainer, name = 'rate_trainer'),
     path('rate_success/', views.success_rating, name='rate_success'),
     path('trainer_details/<trainer_id>/', views.trainer_details, name='trainer_details'),
+    path('student_details/<int:pk>/', views.StudentDetails.as_view(), name='student_details'),
 
 ]

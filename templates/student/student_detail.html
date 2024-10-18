@@ -1,0 +1,27 @@
+{% extends 'student/base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="pagetitle">
+        <h1>Student Details</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'student_home' %}">Home</a></li>
+                <li class="breadcrumb-item active">Student Details</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    {% if user.is_authenticated %}
+    <div class="card p-2 mx-auto my-auto" style="width: 20rem;">
+        <div class="class-body">
+            <p class="card-text">First Name: {{student.first_name}}</p>
+            <p class="card-text">Last Name: {{student.last_name}}</p>
+            <p class="card-text">Email: {{student.email}}</p>
+            <p class="card-text">Country: {{user.profile.country}}</p>
+            <p class="card-text">State: {{student.profile.state}}</p>
+            <p class="card-text">District: {{student.profile.district}}</p>
+        </div>
+    </div>
+    {% endif %}
+
+{% endblock %}

@@ -92,23 +92,32 @@
               <hr class="dropdown-divider">
             </li>
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="{% url 'list_students' %}">
+              <a class="dropdown-item d-flex align-items-center" href="#">
                 <i class="bi bi-question-user"></i>
-                <span>Students</span>
+                <span>{{user.profile.country}}</span>
               </a>
             </li>
             <li>
               <hr class="dropdown-divider">
             </li>
             <li>
-                <a class="dropdown-item d-flex align-items-center" href="{% url 'list_trainers' %}">
+                <a class="dropdown-item d-flex align-items-center" href="#">
                   <i class="bi bi-question-user"></i>
-                  <span>Trainers</span>
+                  <span>{{user.profile.state}}</span>
                 </a>
-              </li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="#">
+                <i class="bi bi-question-user"></i>
+                <span>{{user.profile.district}}</span>
+              </a>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
             <li>
               <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}">
                 <i class="bi bi-box-arrow-right"></i>
@@ -136,7 +145,7 @@
         </li>  
         <li class="nav-heading">Pages</li>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#">
+            <a class="nav-link collapsed" href="{% url 'student_details' user.id %}">
             <i class="bi bi-person-vcard"></i>
             <span>Profile</span>
             </a>

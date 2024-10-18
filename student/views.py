@@ -4,9 +4,9 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
-from manager.models import Course, Chapter, ChapterCompleted
+from manager.models import Course, Chapter, ChapterCompleted 
 from .models import IsPurchased, CanRate
-from trainer.models import Rating
+from trainer.models import Rating, Contact
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
@@ -176,3 +176,12 @@ def rate_trainer(request, trainer_id):
 def success_rating(request):
     return render(request, 'student/success_rating.html')
 
+@login_required
+def trainer_details(request, trainer_id):
+    trainer = User.objects.get(id = trainer_id)
+    contact_det,_ = Contact.objects.get_or_create(user = trainer)
+    rating,_ = Rating.objects.get_or_create(user = trainer)
+    print(rating.score)
+
+
+    return render(request, 'student/trainer_details.html', {'contact':contact_det, 'rating':rating, 'trainer':trainer})

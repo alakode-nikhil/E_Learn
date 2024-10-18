@@ -13,5 +13,6 @@ urlpatterns = [
     path('chapter/<chapter_id>/', views.goto_chapter, name = 'goto_chapter'),
     path('rate_trainer/<trainer_id>/', views.rate_trainer, name = 'rate_trainer'),
     path('rate_success/', views.success_rating, name='rate_success'),
+    path('trainer_details/<trainer_id>/', views.trainer_details, name='trainer_details'),
 
 ]

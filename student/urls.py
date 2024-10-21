@@ -15,5 +15,7 @@ urlpatterns = [
     path('rate_success/', views.success_rating, name='rate_success'),
     path('trainer_details/<trainer_id>/', views.trainer_details, name='trainer_details'),
     path('student_details/<int:pk>/', views.StudentDetails.as_view(), name='student_details'),
+    path('chapter_rating/<chapter_id>/', views.rate_chapter, name = 'rate_chapter'),
+    path('rate_chapter_success/<chapter_id>/', views.success_chapter_rating, name='success_rate_chapter'),
 
 ]

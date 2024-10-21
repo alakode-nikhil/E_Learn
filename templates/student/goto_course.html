@@ -28,6 +28,10 @@
                 {% endif %}
             </div>
         </div>
+        {% if pos_chapter.can_rate %}
+        <a href="{% url 'rate_chapter' current.id %}" class="btn btn-primary my-2">Rate Chapter</a>
+        </form>
+        {% endif %}
         <div class="card mt-5" style="height: 40vh;">
             <input type="hidden" id="progress_percentage" value="{{progress}}">
             <input type="hidden" id="course_name" value="{{course.course_name}}">

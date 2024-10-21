@@ -30,3 +30,4 @@ class ChapterCompleted(models.Model):
 class ChapterRating(models.Model):
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
     chapter_rating = models.IntegerField(default=0)
+    count = models.IntegerField(default=0)

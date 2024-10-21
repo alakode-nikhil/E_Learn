@@ -4,8 +4,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
-from manager.models import Course, Chapter, ChapterCompleted 
-from .models import IsPurchased, CanRate
+from manager.models import Course, Chapter, ChapterCompleted, ChapterRating 
+from .models import IsPurchased, CanRate, CanRateChapter
 from trainer.models import Rating, Contact
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
@@ -110,6 +110,8 @@ def goto_course(request, course_id):
     current = chapters.first()
     chapter_completed = ChapterCompleted.objects.get(chapter = current, student = request.user)
     possible,_ = CanRate.objects.get_or_create(course = course, student = request.user)
+    pos_chapter,_ = CanRateChapter.objects.get_or_create(chapter = current, student = request.user)
+
     if chapter_completed and not chapter_completed.completed:
         chapter_completed.completed = True
         chapter_completed.save()
@@ -125,12 +127,11 @@ def goto_course(request, course_id):
 
     try:
         progress_percentage = (int(completed_time/total_time)) * 100
-        
+       
     except ZeroDivisionError:
         return render(request, 'error/zero_division.html')
 
-
-    return render(request, 'student/goto_course.html', {'course':course, 'chapters':chapters, 'current':current, 'possible':possible, 'progress':progress_percentage})
+    return render(request, 'student/goto_course.html', {'course':course, 'chapters':chapters, 'current':current, 'possible':possible, 'progress':progress_percentage, 'pos_chapter':pos_chapter})
 
 @login_required
 def goto_chapter(request, chapter_id):
@@ -140,13 +141,14 @@ def goto_chapter(request, chapter_id):
     chapters = course.chapter_set.all()
     chapter_completed = ChapterCompleted.objects.get(chapter = chapter, student = request.user)
     possible,_ = CanRate.objects.get_or_create(course = course, student = request.user)
+    pos_chapter,_ = CanRateChapter.objects.get_or_create(chapter = chapter, student = request.user)
     if chapter_completed and not chapter_completed.completed:
         chapter_completed.completed = True
         chapter_completed.save()
     total_time = 0
     completed_time = 0
-    for chapter in chapters:
-        video_path = os.path.join(settings.MEDIA_ROOT, str(chapter.chapter_video))
+    for chp in chapters:
+        video_path = os.path.join(settings.MEDIA_ROOT, str(chp.chapter_video))
         clip = VideoFileClip(video_path)
         duration = clip.duration
         total_time += duration
@@ -158,8 +160,8 @@ def goto_chapter(request, chapter_id):
         
     except ZeroDivisionError:
         return render(request, 'error/zero_division.html')
-
-    return render(request, 'student/goto_course.html', {'course':course, 'chapters':chapters, 'current':chapter, 'possible':possible})
+    
+    return render(request, 'student/goto_course.html', {'course':course, 'chapters':chapters, 'current':chapter, 'possible':possible, 'pos_chapter':pos_chapter, 'progress':progress_percentage,})
 
 @login_required
 def check_trainer(request, trainer_id):
@@ -226,3 +228,35 @@ class StudentDetails(DetailView, LoginRequiredMixin):
 
     def handle_no_permission(self) -> HttpResponseRedirect:
         return render(self.request, 'error/denied_access.html', status=403)
+    
+@login_required
+def rate_chapter(request, chapter_id):
+    
+    chapter = Chapter.objects.get(id = chapter_id)
+    if request.method == 'POST':
+
+        pos_chapter,_ = CanRateChapter.objects.get_or_create(chapter =chapter, student = request.user)
+        rating = int(request.POST.get('rating_input')) if request.POST.get('rating_input') else  1
+        pos_chapter.can_rate = False
+        pos_chapter.save()
+
+        ch_rating,created = ChapterRating.objects.get_or_create(chapter = chapter)
+        if created or ch_rating.count == 0:
+            ch_rating.chapter_rating += rating
+            ch_rating.count += 1
+        
+        else:
+            ch_rating.chapter_rating = int(((ch_rating.chapter_rating * ch_rating.count) + rating)/(ch_rating.count + 1))
+            ch_rating.count += 1
+
+        ch_rating.save()
+
+        return redirect('success_rate_chapter', chapter_id)
+
+    return render(request, 'student/rate_chapter.html', {'chapter':chapter})
+
+@login_required
+def success_chapter_rating(request, chapter_id):
+    id = chapter_id
+    return render(request, 'student/success_rate_chapter.html', {'id':id})
+

@@ -26,3 +26,7 @@ class ChapterCompleted(models.Model):
 
     def __str__(self) -> str:
         return '{}'.format(self.chapter_name)
+    
+class ChapterRating(models.Model):
+    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
+    chapter_rating = models.IntegerField(default=0)

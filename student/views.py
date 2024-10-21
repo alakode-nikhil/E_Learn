@@ -12,6 +12,8 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 import stripe
 from django.urls import reverse
+from moviepy.editor import VideoFileClip
+import os
 
 # Create your views here.
 
@@ -111,8 +113,24 @@ def goto_course(request, course_id):
     if chapter_completed and not chapter_completed.completed:
         chapter_completed.completed = True
         chapter_completed.save()
+    total_time = 0
+    completed_time = 0
+    for chapter in chapters:
+        video_path = os.path.join(settings.MEDIA_ROOT, str(chapter.chapter_video))
+        clip = VideoFileClip(video_path)
+        duration = clip.duration
+        total_time += duration
+        if chapter_completed and chapter_completed.completed:
+            completed_time += duration
 
-    return render(request, 'student/goto_course.html', {'course':course, 'chapters':chapters, 'current':current, 'possible':possible})
+    try:
+        progress_percentage = (int(completed_time/total_time)) * 100
+        
+    except ZeroDivisionError:
+        return render(request, 'error/zero_division.html')
+
+
+    return render(request, 'student/goto_course.html', {'course':course, 'chapters':chapters, 'current':current, 'possible':possible, 'progress':progress_percentage})
 
 @login_required
 def goto_chapter(request, chapter_id):
@@ -125,6 +143,21 @@ def goto_chapter(request, chapter_id):
     if chapter_completed and not chapter_completed.completed:
         chapter_completed.completed = True
         chapter_completed.save()
+    total_time = 0
+    completed_time = 0
+    for chapter in chapters:
+        video_path = os.path.join(settings.MEDIA_ROOT, str(chapter.chapter_video))
+        clip = VideoFileClip(video_path)
+        duration = clip.duration
+        total_time += duration
+        if chapter_completed and chapter_completed.completed:
+            completed_time += duration
+
+    try:
+        progress_percentage = (int(completed_time/total_time)) * 100
+        
+    except ZeroDivisionError:
+        return render(request, 'error/zero_division.html')
 
     return render(request, 'student/goto_course.html', {'course':course, 'chapters':chapters, 'current':chapter, 'possible':possible})
 

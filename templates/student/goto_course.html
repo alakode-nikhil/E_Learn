@@ -28,6 +28,13 @@
                 {% endif %}
             </div>
         </div>
+        <div class="card mt-5" style="height: 40vh;">
+            <input type="hidden" id="progress_percentage" value="{{progress}}">
+            <input type="hidden" id="course_name" value="{{course.course_name}}">
+            <div class="card-body" style="height: 35vh;">
+                <canvas id="progress-bar" style="height: 35vh;"></canvas>
+            </div>
+        </div>
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasRightLabel">{{course.course_name}}</h5>

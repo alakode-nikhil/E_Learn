@@ -34,6 +34,7 @@
             <td>{{course.trainer}}</td>
             <td>
                 <a href="{% url 'goto_course' course.id %}" class="btn btn-primary"> Go to course</a>
+                <a href="#" class="btn btn-success">Feedback</a>
                 <a href="{% url 'trainer_details' course.trainer.id %}" class="btn btn-warning">Trainer Details</a>
             </td>
         </tr>

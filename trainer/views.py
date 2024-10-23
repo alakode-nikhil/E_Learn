@@ -72,8 +72,6 @@ def student_progress(request, course_id, student_id):
        
     except ZeroDivisionError:
         return render(request, 'error/zero_division.html')
-    
-    print(progress_percentage)
 
     return render(request, 'trainer/student_progress.html', {'course':course, 'student':student, 'progress':progress_percentage})
 

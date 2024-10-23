@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
 from manager.models import Course, Chapter, ChapterCompleted, ChapterRating 
-from .models import IsPurchased, CanRate, CanRateChapter
+from .models import IsPurchased, CanRate, CanRateChapter, FeedBack
 from trainer.models import Rating, Contact
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
@@ -259,4 +259,21 @@ def rate_chapter(request, chapter_id):
 def success_chapter_rating(request, chapter_id):
     id = chapter_id
     return render(request, 'student/success_rate_chapter.html', {'id':id})
+
+@login_required    
+def update_feedback(request,pk):
+
+    student = request.user
+    course = Course.objects.get(id = pk)
+    feedback,_ = FeedBack.objects.get_or_create(student = student, course = course)
+
+    if request.method == 'POST':
+
+        content = request.POST.get('feedback')
+        feedback.content = content
+        feedback.save()
+
+        return redirect('student_home')
+    
+    return render(request, 'student/update_feedback.html', {'feedback':feedback})
 

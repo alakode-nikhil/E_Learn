@@ -1,0 +1,31 @@
+{% extends 'student/base.html' %}
+{% load static %}
+{% block content %}
+<div class="pagetitle">
+    <h1>Feedback</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'student_home' %}">Home</a></li>
+            <li class="breadcrumb-item active">{{feedback.course.course_name}} feedback</li>
+        </ol>
+    </nav>
+  </div>
+<div class="card mx-auto">
+    <div class="card-body mt-5">
+        {% for msg in messages %}
+        {{msg}}
+        {% endfor %}
+        {% if user.is_authenticated %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="first_name" class="form-label">Feedback</label>
+                <input type="text" class="form-control" name="feedback" id ="feedback" required value="{{feedback.content}}">
+            </div>
+            <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        {% endif %}
+    </div> 
+</div>
+{% endblock %}

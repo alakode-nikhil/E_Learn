@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DeleteView, CreateView
 from .models import Course, Chapter, ChapterCompleted
-from student.models import FeedBack
+from student.models import FeedBack, PaymentDetails
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -216,3 +216,24 @@ def student_feedback(request, course_id, student_id):
     feedback,_ = FeedBack.objects.get_or_create(student = student, course = course)
 
     return render(request, 'manager/student_feedback.html', {'feedback':feedback})
+
+@login_required
+def update_payment_details(request, course_id, student_id):
+    course = Course.objects.get(id = course_id)
+    student = User.objects.get(id = student_id)
+
+    pay_details,_ = PaymentDetails.objects.get_or_create(course= course, student = student)
+
+    if request.method == 'POST':
+        payment_method = request.POST.get('payment_method')
+        payment_date = request.POST.get('payment_date')
+        payment_amount = request.POST.get('payment_amount')
+
+        pay_details.payment_method = payment_method
+        pay_details.payment_date = payment_date
+        pay_details.payment_amount = payment_amount
+        pay_details.save()
+
+        return redirect('mng_course_student_list',course_id = course.id)
+    
+    return render(request,'manager/update_payment.html', {'pay_details':pay_details})

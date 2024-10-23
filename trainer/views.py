@@ -89,3 +89,4 @@ def add_chapter(request, course_id):
         return redirect('trainer_home')
 
     return render(request, 'trainer/add_chapter.html',{'course':course})
+

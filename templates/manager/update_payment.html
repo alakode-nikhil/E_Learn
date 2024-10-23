@@ -1,0 +1,40 @@
+{% extends 'manager/base.html' %}
+{% load static %}
+{% block content %}
+<div class="pagetitle">
+    <h1>{{pay_details.course.course_name}}</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'manager_home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'course_details' pay_details.course.id %}">{{pay_details.course.course_name}} Details</a></li>
+            <li class="breadcrumb-item "><a href = "{% url 'mng_course_student_list' pay_details.course.id %}">{{pay_details.course.course_name}} students</a></li>
+            <li class="breadcrumb-item">{{pay_details.student.first_name}}'s payment details</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+<div class="card mx-auto">
+    <div class="card-body mt-5">
+        {% for msg in messages %}
+        {{msg}}
+        {% endfor %}
+        {% if user.is_authenticated %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="payment_method" class="form-label">Payment Method</label>
+                <input type="text" class="form-control" name="payment_method" id ="payment_method" required value="{{pay_details.payment_method}}">
+            </div>
+            <div class="mb-3">
+                <label for="payment_date" class="form-label">Payment Date</label>
+                <input type="date" class="form-control" name="payment_date" id ="payment_date" required value="{{pay_details.payment_date}}">
+            </div>
+            <div class="mb-3">
+                <label for="payment_amount" class="form-label">Payment Amount</label>
+                <input type="number" class="form-control" name="payment_amount" id ="payment_amount" required value="{{pay_details.course.price}}">
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+        {% endif %}
+    </div> 
+</div>
+{% endblock %}

@@ -126,7 +126,7 @@ def goto_course(request, course_id):
             completed_time += duration
 
     try:
-        progress_percentage = (int(completed_time/total_time)) * 100
+        progress_percentage = int((completed_time/total_time) * 100)
        
     except ZeroDivisionError:
         return render(request, 'error/zero_division.html')
@@ -156,7 +156,7 @@ def goto_chapter(request, chapter_id):
             completed_time += duration
 
     try:
-        progress_percentage = (int(completed_time/total_time)) * 100
+        progress_percentage = int((completed_time/total_time) * 100)
         
     except ZeroDivisionError:
         return render(request, 'error/zero_division.html')

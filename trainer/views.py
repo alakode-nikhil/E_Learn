@@ -1,8 +1,8 @@
 from typing import Any
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views.generic import ListView
 from django.contrib.auth.models import User
-from manager.models import Course, ChapterCompleted
+from manager.models import Course, ChapterCompleted, Chapter
 from django.db.models.query import QuerySet
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -68,9 +68,26 @@ def student_progress(request, course_id, student_id):
             completed_time += duration
 
     try:
-        progress_percentage = (int(completed_time/total_time)) * 100
+        progress_percentage = int((completed_time/total_time) * 100)
        
     except ZeroDivisionError:
         return render(request, 'error/zero_division.html')
+    
+    print(progress_percentage)
 
     return render(request, 'trainer/student_progress.html', {'course':course, 'student':student, 'progress':progress_percentage})
+
+@login_required
+def add_chapter(request, course_id):
+
+    course = Course.objects.get(id = course_id)
+
+    if request.method == 'POST':
+        chapter_name = request.POST.get('chapter_name')
+        chapter_video = request.FILES.get('chapter_video')
+
+        chapter= Chapter.objects.create(chapter_name = chapter_name, chapter_video = chapter_video, course = course)
+        chapter.save()
+        return redirect('trainer_home')
+
+    return render(request, 'trainer/add_chapter.html',{'course':course})

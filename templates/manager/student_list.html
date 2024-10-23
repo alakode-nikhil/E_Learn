@@ -34,6 +34,7 @@
                   <td>{{student.last_name}}</td>
                   <td>
                       <a href="{% url 'mng_student_progress' course.id student.id %}" class="btn btn-primary"> Student Progress</a>
+                      <a href="{% url 'student_feedback' course.id student.id %}" class="btn btn-success"> Student Feedback </a>
                   </td>
               </tr>
               {% endfor %}

@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DeleteView, CreateView
 from .models import Course, Chapter, ChapterCompleted
+from student.models import FeedBack
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -206,3 +207,12 @@ def student_progress(request, course_id, student_id):
     print(progress_percentage)
 
     return render(request, 'manager/student_progress.html', {'course':course, 'student':student, 'progress':progress_percentage})
+
+@login_required
+def student_feedback(request, course_id, student_id):
+
+    student = User.objects.get(id = student_id)
+    course = Course.objects.get(id = course_id)
+    feedback,_ = FeedBack.objects.get_or_create(student = student, course = course)
+
+    return render(request, 'manager/student_feedback.html', {'feedback':feedback})

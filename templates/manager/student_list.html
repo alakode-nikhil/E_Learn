@@ -1,0 +1,69 @@
+{% extends 'trainer/base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="pagetitle">
+        <h1>Home</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'manager_home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'course_details' course.id %}">{{course.course_name}} Details</a></li>
+                <li class="breadcrumb-item active"> {{course.course_name}} students</li>
+            </ol>
+        </nav>
+      </div><!-- End Page Title -->
+      {% for msg in messages %}
+      {{msg}}
+      {% endfor %}
+      
+      {%if user.is_authenticated and user.profile.type == 'MANAGER' %}
+      <table class="table">
+          <thead>
+              <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
+                  <th scope="col">Action</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for student in object_list %}
+              <tr>
+                  <th scope="row">{{forloop.counter}}</th>
+                  <td>{{student.first_name}}</td>
+                  <td>{{student.last_name}}</td>
+                  <td>
+                      <a href="{% url 'mng_student_progress' course.id student.id %}" class="btn btn-primary"> Student Progress</a>
+                  </td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+      {% endif %}
+      
+      <!--Pagination-->
+      <nav aria-label="Page navigation example">
+          <ul class="pagination">
+              {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{page_obj.previous_page_number}}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            {% endif %}
+            {% for num in paginator.page_range %}
+            <li class="page-item {% if page_obj.number == num %} activate {% endif %}">
+              <a class="page-link" href="?page={{num}}">{{num}}</a></li>
+            {% endfor %}
+            <li class="page-item">
+              {% if page_obj.has_next %}
+              <a class="page-link" href="?page={{page_obj.next_page_number}}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </nav> <!--Pagination End-->   
+
+{% endblock %}
+

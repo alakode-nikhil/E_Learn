@@ -18,3 +18,8 @@ class CanRateChapter(models.Model):
     student = models.ForeignKey(User, on_delete=models.CASCADE)
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
     can_rate = models.BooleanField(default=True)
+
+class FeedBack(models.Model):
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    content = models.TextField(default="")

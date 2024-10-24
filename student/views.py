@@ -117,12 +117,13 @@ def goto_course(request, course_id):
         chapter_completed.save()
     total_time = 0
     completed_time = 0
-    for chapter in chapters:
-        video_path = os.path.join(settings.MEDIA_ROOT, str(chapter.chapter_video))
+    for chp in chapters:
+        video_path = os.path.join(settings.MEDIA_ROOT, str(chp.chapter_video))
+        chp_completed = ChapterCompleted.objects.get(chapter = chp, student = request.user)
         clip = VideoFileClip(video_path)
         duration = clip.duration
         total_time += duration
-        if chapter_completed and chapter_completed.completed:
+        if chp_completed and chp_completed.completed:
             completed_time += duration
 
     try:
@@ -150,11 +151,11 @@ def goto_chapter(request, chapter_id):
     for chp in chapters:
         video_path = os.path.join(settings.MEDIA_ROOT, str(chp.chapter_video))
         clip = VideoFileClip(video_path)
+        chp_completed = ChapterCompleted.objects.get(chapter = chp, student = request.user)
         duration = clip.duration
         total_time += duration
-        if chapter_completed and chapter_completed.completed:
+        if chp_completed and chp_completed.completed:
             completed_time += duration
-
     try:
         progress_percentage = int((completed_time/total_time) * 100)
         

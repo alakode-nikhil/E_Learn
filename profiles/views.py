@@ -15,6 +15,9 @@ def register_user(request):
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
+        country = request.POST.get('country')
+        state = request.POST.get('state')
+        district = request.POST.get('district')
         if user_type == 'MANAGER':
             is_superuser = True
         else:
@@ -34,7 +37,7 @@ def register_user(request):
             return redirect('register')
         user = User.objects.create_user(username=username, first_name= first_name, last_name = last_name, is_superuser = is_superuser, password= password, email=email)
         user.save()
-        profile = Profile.objects.create(user = user, type = user_type, user_id = user.id)
+        profile = Profile.objects.create(user = user, type = user_type, user_id = user.id, country = country, state = state, district = district)
         profile.save()
         if request.user.is_authenticated:
             if request.user.is_superuser:

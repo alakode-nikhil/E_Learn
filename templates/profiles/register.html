@@ -1,7 +1,7 @@
 {% extends 'profiles/base.html' %}
 {% load static %}
 {% block content %}
-<div class="card mx-auto">
+<div class="card mx-auto mt-5">
     <div class="card-body mt-5">
         {% for msg in messages %}
         {{msg}}
@@ -19,6 +19,18 @@
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" name="username" id="username" required>
+            </div>
+            <div class="mb-3">
+                <label for="country" class="form-label">Country</label>
+                <input type="text" class="form-control" name="country" id="country" required>
+            </div>
+            <div class="mb-3">
+                <label for="state" class="form-label">State</label>
+                <input type="text" class="form-control" name="state" id="state" required>
+            </div>
+            <div class="mb-3">
+                <label for="district" class="form-label">District</label>
+                <input type="text" class="form-control" name="district" id="district" required>
             </div>
             <div class="mb-3">
             <label for="email" class="form-label">Email</label>

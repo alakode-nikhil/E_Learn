@@ -46,8 +46,8 @@ def purchase_course(request, course_id):
     stripe.api_key = settings.STRIPE_SECRET_KEY
     course = Course.objects.get(id= course_id)
 
-    already_purchased = IsPurchased.objects.get(student = request.user, course = course)
-    if already_purchased:
+    already_purchased,_ = IsPurchased.objects.get_or_create(student = request.user, course = course)
+    if already_purchased.is_purchased:
         return redirect('already_purchased', pk = course.id)
 
     if request.method == 'POST':
